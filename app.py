@@ -6,6 +6,7 @@ import uuid
 import zipfile
 import smtplib
 import mysql.connector
+from dotenv import load_dotenv
 from email.message import EmailMessage
 
 from flask import (
@@ -14,6 +15,8 @@ from flask import (
 )
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+
+load_dotenv()
 
 app = Flask(__name__)
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"

@@ -18,16 +18,15 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 ```
 
-Set the required environment variables before starting the app:
+Copy the example file once:
 
 ```powershell
-$env:SECRET_KEY = "<a long random secret>"
-$env:DB_PASSWORD = "<your MySQL password>"
+Copy-Item .env.example .env
 ```
 
-Optional database settings default to `localhost`, user `root`, and database `nexhup_db`. Override them with `DB_HOST`, `DB_USER`, and `DB_NAME` if needed.
+Open `.env` and set a long random value for `SECRET_KEY` and your MySQL password for `DB_PASSWORD`. Optional database settings default to `localhost`, user `root`, and database `nexhup_db`; override them with `DB_HOST`, `DB_USER`, and `DB_NAME` if needed. Keep `.env` private; it is excluded from Git.
 
-Start the development server with:
+After the one-time setup, start the development server normally:
 
 ```powershell
 python app.py

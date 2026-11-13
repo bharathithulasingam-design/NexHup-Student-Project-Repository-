@@ -1,0 +1,295 @@
+/* =================================
+   NEXHUP REGISTER PAGE
+   ================================= */
+
+.auth-page {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 40px 20px;
+
+    background: #f5f7fb;
+}
+
+
+/* Register Card */
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+
+    padding: 32px;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Logo */
+
+.auth-logo {
+    text-align: center;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    color: #4f46e5;
+
+    margin-bottom: 22px;
+}
+
+.auth-logo span {
+    color: #111827;
+}
+
+
+/* Heading */
+
+.auth-card h1 {
+    text-align: center;
+
+    font-size: 28px;
+
+    color: #111827;
+
+    margin-bottom: 10px;
+}
+
+
+/* Subtitle */
+
+.auth-subtitle {
+    text-align: center;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    margin-bottom: 28px;
+}
+
+
+/* Form */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #374151;
+}
+
+
+/* Normal Input */
+
+.form-group input {
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 13px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #111827;
+
+    font-size: 14px;
+
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+
+.form-group input:focus {
+    border-color: #4f46e5;
+
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+}
+
+
+/* Password Box */
+
+.password-box {
+    position: relative;
+
+    width: 100%;
+}
+
+
+.password-box input {
+    padding-right: 50px;
+}
+
+
+/* Eye Button */
+
+.password-toggle {
+    position: absolute;
+
+    right: 10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border: none;
+
+    background: transparent;
+
+    color: #64748b;
+
+    cursor: pointer;
+
+    padding: 0;
+}
+
+
+.password-toggle:hover {
+    color: #4f46e5;
+}
+
+
+/* SVG Eye */
+
+.eye-icon {
+    width: 20px;
+
+    height: 20px;
+
+    display: block;
+}
+
+
+/* Create Account Button */
+
+.auth-submit {
+    width: 100%;
+
+    height: 48px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #4f46e5;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.auth-submit:hover {
+    background: #4338ca;
+}
+
+
+/* Login Text */
+
+.auth-login {
+    text-align: center;
+
+    margin-top: 22px;
+
+    color: #64748b;
+
+    font-size: 14px;
+}
+
+
+.auth-login a {
+    color: #4f46e5;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.auth-login a:hover {
+    text-decoration: underline;
+}
+
+
+/* Back Home */
+
+.back-home {
+    display: block;
+
+    text-align: center;
+
+    margin-top: 15px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    text-decoration: none;
+}
+
+
+.back-home:hover {
+    color: #4f46e5;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .auth-page {
+        padding: 25px 15px;
+    }
+
+    .auth-card {
+        max-width: 100%;
+
+        padding: 28px 22px;
+    }
+
+    .auth-card h1 {
+        font-size: 25px;
+    }
+
+}

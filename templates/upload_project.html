@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Project | NexHup</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+   
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background:
+        radial-gradient(ellipse at 5% 15%, #d9e9ff 0, transparent 35%),
+        radial-gradient(ellipse at 95% 10%, #e7dcff 0, transparent 32%),
+        radial-gradient(ellipse at 10% 95%, #d8e5ff 0, transparent 35%),
+        linear-gradient(135deg, #eef2ff, #faf9ff, #e9f3ff);
+    color: #252642;
+    min-height: 100vh;
+}
+    nav {
+        background: rgba(255,255,255,0.95);
+        padding: 20px 8%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 3px 15px #28245a0d;
+    }
+
+    nav a {
+        color: #6554e8;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .logo {
+        font-size: 27px;
+        font-weight: 800;
+        color: #6554e8;
+        letter-spacing: -1px;
+    }
+
+   
+.container {
+    width: 92%;
+    max-width: 1250px;
+    margin: 35px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #e3e7ff;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(77, 82, 180, 0.12);
+}
+
+    h1 {
+        margin: 0 0 12px;
+        font-size: 30px;
+        letter-spacing: -0.8px;
+    }
+
+    p {
+        color: #777b91;
+        line-height: 1.6;
+    }
+
+    label {
+        display: block;
+        margin: 22px 0 9px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #373750;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #dfe1ef;
+        border-radius: 11px;
+        font-size: 15px;
+        font-family: inherit;
+        background: #fcfcff;
+        transition: 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #7565ef;
+        background: white;
+        box-shadow: 0 0 0 4px #7565ef18;
+    }
+
+    input[type="file"] {
+        padding: 12px;
+        background: #f8f7ff;
+        border: 1px dashed #aaa1ef;
+        cursor: pointer;
+    }
+
+    textarea {
+        min-height: 125px;
+        resize: vertical;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 28px;
+        padding: 16px;
+        border: none;
+        border-radius: 11px;
+        background: linear-gradient(100deg, #6554e8, #8872f5);
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 7px 18px #6554e833;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px #6554e840;
+    }
+
+    .message {
+        padding: 13px;
+        background: #f0fff5;
+        color: #167543;
+        border-radius: 10px;
+        margin: 12px 0;
+    }
+
+    .optional {
+        font-weight: normal;
+        color: #888ba0;
+    }
+
+    @media (max-width: 720px) {
+        .container {
+            margin: 22px 14px;
+            padding: 23px 18px;
+        }
+
+        h1 {
+            font-size: 25px;
+        }
+
+        nav {
+            padding: 17px 5%;
+        }
+    }
+
+    
+.upload-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.8fr) minmax(280px, 0.9fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.upload-form {
+    min-width: 0;
+}
+
+.ai-panel {
+    padding: 24px;
+    border-radius: 20px;
+    background: linear-gradient(160deg, #f5f3ff, #f0f6ff);
+    border: 1px solid #e5e3ff;
+}
+
+.ai-heading {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.ai-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 45px;
+    height: 45px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #6554e8, #9a7cff);
+    color: white;
+    font-size: 25px;
+}
+
+.ai-heading h2 {
+    margin: 4px 0 8px;
+    font-size: 19px;
+    color: #17245c;
+}
+
+.ai-heading small {
+    font-size: 10px;
+    background: #ded7ff;
+    color: #6246d9;
+    padding: 4px 7px;
+    border-radius: 10px;
+}
+
+.ai-heading p,
+.idea-card p {
+    font-size: 13px;
+    margin: 6px 0;
+    line-height: 1.6;
+}
+
+.ai-section {
+    border-top: 1px solid #e4e3f5;
+    margin-top: 22px;
+    padding-top: 18px;
+}
+
+.ai-section h3 {
+    font-size: 15px;
+    color: #252c65;
+    margin: 0 0 14px;
+}
+
+.tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tech-tags span {
+    padding: 8px 12px;
+    border-radius: 20px;
+    background: white;
+    color: #5141bd;
+    font-size: 12px;
+    border: 1px solid #e4e0ff;
+}
+
+.idea-card {
+    background: white;
+    padding: 15px;
+    border-radius: 13px;
+    margin-bottom: 12px;
+    border: 1px solid #eeeeff;
+}
+
+.idea-card strong {
+    font-size: 13px;
+    color: #18275f;
+}
+
+.idea-card p {
+    color: #687594;
+}
+
+.ai-note {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 13px;
+    background: #eae5ff;
+    color: #6246c7;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+@media (max-width: 850px) {
+    .upload-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+nav {
+    min-height: 70px;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 16px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 18px rgba(40, 36, 90, 0.07);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.profile-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #eee9ff;
+    color: #6554e8;
+    font-size: 25px;
+}
+</style>
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/premium-pages.css') }}">
+
+</head>
+
+<body class="dark-page upload-page">
+    
+<nav>
+    <a class="logo" href="{{ url_for('home') }}">Nex<span>Hup</span></a>
+
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('explore') }}">Explore</a>
+        <a href="{{ url_for('home') }}#categories">Categories</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <form action="{{ url_for('logout') }}" method="POST" class="nav-logout">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</nav>
+
+    <div class="container">
+    <div class="upload-layout">
+        <div class="upload-form">
+        <h1>Upload Your Project</h1>
+        <p>Share your project details with other students.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        <form action="{{ url_for('upload_project') }}"
+              method="POST" enctype="multipart/form-data">
+
+            <label for="title">Project Title *</label>
+            <input type="text" id="title" name="title"
+                   maxlength="150" required>
+
+            
+        <label for="description">Project Description *</label>
+
+              <textarea id="description" name="description"
+                    required></textarea>
+
+<button type="button" id="generateAI">
+    Generate with AI
+</button>
+
+<p id="aiMessage"></p>
+
+
+            <label for="category">Category *</label>
+            <select id="category" name="category" required>
+                <option value="">Select Category</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Python">Python</option>
+                <option value="AI/ML">AI/ML</option>
+                <option value="Mobile App">Mobile App</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="technologies">Technologies Used *</label>
+            <input type="text" id="technologies" name="technologies"
+                   placeholder="e.g. Python, Flask, MySQL" required>
+
+            <label for="visibility">Project Visibility *</label>
+            <select id="visibility" name="visibility" required>
+                <option value="public" selected>Public - visible to everyone</option>
+                <option value="private">Private - visible only to you</option>
+            </select>
+
+            <label for="image">Project Card Image <span class="optional">(Optional)</span></label>
+            <input type="file" id="image" name="image"
+                   accept=".jpg,.jpeg,.png,.webp">
+
+            <label for="document">Project Document PDF <span class="optional">(Optional)</span></label>
+            <input type="file" id="document" name="document"
+                   accept=".pdf,application/pdf">
+
+            <label for="source_file">Project Source Files <span class="optional">(Optional ZIP archive, up to 25 MB total upload)</span></label>
+            <input type="file" id="source_file" name="source_file"
+                   accept=".zip,application/zip,application/x-zip-compressed">
+
+            <label for="github_link">GitHub Link <span class="optional">(Optional)</span></label>
+            <input type="url" id="github_link" name="github_link"
+                   placeholder="https://github.com/username/project">
+
+            <label for="demo_link">Demo Link <span class="optional">(Optional)</span></label>
+            <input type="url" id="demo_link" name="demo_link"
+                   placeholder="https://your-demo-link.com">
+
+            <button type="submit">Upload Project</button>
+        </form>
+    </div>
+
+
+     
+          <aside class="ai-panel">
+              <div class="ai-heading">
+                <span class="ai-icon">✦</span>
+             <div>
+            <h2>AI Project Assistant <small>Beta</small></h2>
+            <p>Get suggestions for your project.</p>
+             </div>
+          </div>
+
+         <div class="ai-section">
+            <h3>💡 Project Suggestions</h3>
+        <button type="button" id="getSuggestions">
+            Get AI Suggestions
+        </button>
+        <p id="suggestionMessage"></p>
+    </div>
+
+    <div class="ai-section" id="suggestionResults" hidden>
+        <h3>Recommended Technologies</h3>
+        <div id="suggestedTechnologies" class="tech-tags"></div>
+
+        <h3>Related Project Ideas</h3>
+        <div id="relatedIdeas"></div>
+
+        <h3>Improvement Tips</h3>
+        <div id="improvementTips"></div>
+    </div>
+
+    <div class="ai-note">
+        Enter your project title and category, then click
+        <strong>Get AI Suggestions</strong>.
+    </div>
+</aside>
+
+    </div>
+</div>
+
+
+<script>
+document.getElementById("generateAI").addEventListener("click", async function () {
+    const title = document.querySelector('[name="title"]').value.trim();
+    const category = document.querySelector('[name="category"]').value.trim();
+    const technologies = document.querySelector('[name="technologies"]').value.trim();
+    const message = document.getElementById("aiMessage");
+    const description = document.getElementById("description");
+
+    if (!title) {
+        message.textContent = "Please enter the project title first.";
+        return;
+    }
+
+    message.textContent = "AI is generating...";
+    this.disabled = true;
+
+    try {
+        const response = await fetch("/ai-description", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({title, category, technologies})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "AI generation failed.");
+        }
+
+        description.value = data.description;
+        message.textContent = "Description generated! You can edit it.";
+    } catch (error) {
+        message.textContent = error.message;
+    } finally {
+        this.disabled = false;
+    }
+});
+</script>
+
+
+<script>
+document.getElementById("getSuggestions").addEventListener("click", async function () {
+    const title = document.querySelector('[name="title"]').value.trim();
+    const category = document.querySelector('[name="category"]').value;
+    const technologies = document.querySelector('[name="technologies"]').value.trim();
+
+    const message = document.getElementById("suggestionMessage");
+    const results = document.getElementById("suggestionResults");
+
+    if (!title) {
+        message.textContent = "Please enter your project title first.";
+        return;
+    }
+
+    message.textContent = "AI is preparing suggestions...";
+    this.disabled = true;
+
+    try {
+        const response = await fetch("/ai-assistance", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({title, category, technologies})
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Could not get suggestions.");
+        }
+
+        document.getElementById("suggestedTechnologies").innerHTML =
+            (data.technologies || []).map(t =>
+                `<span>${escapeHTML(t)}</span>`
+            ).join("");
+
+        document.getElementById("relatedIdeas").innerHTML =
+            (data.ideas || []).map(i =>
+                `<div class="idea-card">${escapeHTML(i)}</div>`
+            ).join("");
+
+        document.getElementById("improvementTips").innerHTML =
+            (data.tips || []).map(t =>
+                `<p>${escapeHTML(t)}</p>`
+            ).join("");
+
+        results.hidden = false;
+        message.textContent = "Suggestions generated successfully!";
+    } catch (error) {
+        message.textContent = error.message;
+    } finally {
+        this.disabled = false;
+    }
+});
+
+function escapeHTML(value) {
+    const element = document.createElement("span");
+    element.textContent = String(value);
+    return element.innerHTML;
+}
+</script>
+
+
+</body>
+</html>

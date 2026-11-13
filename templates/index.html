@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NexHup - Student Project Repository</title>
+    <meta name="description"
+          content="Discover student-built projects, share your work, and find inspiration for your next idea with the NexHup student project community.">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="{{ url_for('home', _external=True) }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexHup - Student Project Community">
+    <meta property="og:description"
+          content="Discover student-built projects, share your work, and find inspiration for your next idea.">
+    <meta property="og:url" content="{{ url_for('home', _external=True) }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="homepage">
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+
+        <div class="logo">
+            Nex<span>Hup</span>
+        </div>
+
+        <nav>
+            <a href="{{ url_for('home') }}" class="active">Home</a>
+            <a href="{{ url_for('explore') }}">Explore</a>
+            <a href="{{ url_for('home') }}#categories">Categories</a>
+            <a href="{{ url_for('about') }}">About</a>
+        </nav>
+
+      
+    
+<div class="nav-actions">
+
+    {% if session.get('user_id') %}
+
+        <span class="welcome-user">
+            Hi, {{ session.get('user_name') }}
+        </span>
+
+        <form action="{{ url_for('logout') }}" method="POST">
+            <button type="submit" class="login-btn">
+                Logout
+            </button>
+        </form>
+
+    {% else %}
+
+        <a href="{{ url_for('login') }}" class="login-btn">
+            Login
+        </a>
+
+        <a href="{{ url_for('register') }}" class="signup-btn">
+            Join NexHup
+        </a>
+
+    {% endif %}
+
+</div>
+
+    </header>
+
+
+    <!-- Hero Section -->
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                {% if session.get('user_id') %}
+                    <p class="hero-tag">
+                        ✦ YOUR NEXHUP WORKSPACE
+                    </p>
+
+                    <h1>
+                        Welcome back,<br>
+                        <span>{{ session.get('user_name') }}.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Your projects and next-step ideas, all in one place.
+                        Keep building and share your progress with the community.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('upload_project') }}" class="primary-btn">
+                            Upload a Project →
+                        </a>
+                        <a href="{{ url_for('explore') }}" class="secondary-btn">
+                            Explore Community
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="hero-tag">
+                        ✦ STUDENT PROJECT COMMUNITY
+                    </p>
+
+                    <h1>
+                        Discover Projects.<br>
+                        <span>Build Your Next Idea.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Explore student projects, share what you build,
+                        discover new ideas and get AI-powered recommendations
+                        — all in one place.
+                    </p>
+
+                    <div class="hero-buttons">
+                        <a href="{{ url_for('explore') }}" class="primary-btn">
+                            Explore Projects →
+                        </a>
+                        <a href="{{ url_for('upload_project') }}" class="secondary-btn">
+                            Upload Your Project
+                        </a>
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <!-- Hero Project Preview -->
+            <div class="hero-preview">
+
+                {% if session.get('user_id') %}
+                <div class="preview-card dashboard-preview">
+                    <div class="preview-top">
+                        <span>Your workspace</span>
+                        <span class="status">● Personal</span>
+                    </div>
+
+                    <h3>{{ project_count }} project{% if project_count != 1 %}s{% endif %} shared</h3>
+                    <p>
+                        {% if own_projects %}
+                            Your latest work is ready. Keep improving it or share
+                            another idea with the community.
+                        {% else %}
+                            Your workspace is ready. Upload your first project
+                            to get personalized next-step ideas.
+                        {% endif %}
+                    </p>
+
+                    <div class="tech-list">
+                        <span>{{ own_projects|length }} recent</span>
+                        <span>Personal ideas</span>
+                        <span>Community</span>
+                    </div>
+
+                    <div class="preview-footer">
+                        <span>Only your projects appear in this dashboard</span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="preview-card">
+
+                    <div class="preview-top">
+                        <span>Featured Project</span>
+                        <span class="status">● Featured</span>
+                    </div>
+                    {% endif %}
+
+                    <h3>Smart Student Assistant</h3>
+
+                    <p>
+                        An intelligent student application designed
+                        to organize notes and learning resources.
+                    </p>
+
+                    <div class="tech-list">
+                        <span>Python</span>
+                        <span>Flask</span>
+                        <span>MySQL</span>
+                        <span>AI</span>
+                    </div>
+
+                    <div class="preview-footer">
+                        <span>👤 Student Project</span>
+                        <span>♡ 24</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        {% if session.get('user_id') %}
+        <section class="dashboard-section" id="my-projects">
+            <div class="section-heading dashboard-heading">
+                <div>
+                    <p class="small-title">YOUR WORKSPACE</p>
+                    <h2>Your Projects</h2>
+                    <p class="dashboard-summary">
+                        {{ project_count }} project{% if project_count != 1 %}s{% endif %} uploaded by you
+                    </p>
+                </div>
+                <a href="{{ url_for('explore') }}">Explore community →</a>
+            </div>
+
+            {% if dashboard_error %}
+                <p class="dashboard-error" role="alert">{{ dashboard_error }}</p>
+            {% elif own_projects %}
+                <div class="dashboard-project-grid">
+                    {% for project in own_projects %}
+                    <article class="dashboard-project-card">
+                        {% if project.image_filename %}
+                            <img
+                                class="dashboard-project-image"
+                                src="{{ url_for('project_file', project_id=project.id, file_type='image') }}"
+                                alt="{{ project.title }} project preview"
+                                loading="lazy">
+                        {% else %}
+                            <div class="dashboard-project-image dashboard-project-placeholder"
+                                 aria-hidden="true">
+                                <span>{{ project.category }}</span>
+                            </div>
+                        {% endif %}
+
+                        <div class="dashboard-project-content">
+                            <span class="project-category">{{ project.category }}</span>
+                            <span class="project-visibility">
+                                {{ project.visibility|capitalize }}
+                            </span>
+                            <h3>{{ project.title }}</h3>
+                            <p class="dashboard-project-description">{{ project.description }}</p>
+
+                            {% if project.technologies %}
+                            <div class="project-tech">
+                                {% for technology in project.technologies.split(',')[:3] %}
+                                    {% if technology.strip() %}
+                                    <span>{{ technology.strip() }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
+                            <div class="next-idea">
+                                <span>✦ NEXT IDEA</span>
+                                <p>{{ project.next_idea }}</p>
+                            </div>
+
+                            <div class="dashboard-project-actions">
+                                <a href="{{ url_for('edit_project', project_id=project.id) }}">
+                                    Edit project
+                                </a>
+                                {% if project.source_filename %}
+                                <a href="{{ url_for('download_project_source', project_id=project.id) }}">
+                                    Download source
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+
+                {% if project_count > own_projects|length %}
+                <div class="dashboard-more">
+                    <a href="{{ url_for('explore') }}">View all {{ project_count }} of your projects →</a>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="dashboard-empty">
+                    <div class="dashboard-empty-icon" aria-hidden="true">✦</div>
+                    <h3>Your first project starts here</h3>
+                    <p>Upload a project to see it in your personal workspace and get ideas for what to build next.</p>
+                    <a class="primary-btn" href="{{ url_for('upload_project') }}">Upload Your First Project →</a>
+                </div>
+            {% endif %}
+        </section>
+        {% else %}
+
+        <!-- Search Section -->
+        <section class="search-section">
+
+            <div class="search-box">
+
+                <span class="search-icon">⌕</span>
+
+                <input
+                    type="text"
+                    placeholder="Search projects, technologies or categories..."
+                >
+
+                <button>Search</button>
+
+            </div>
+
+        </section>
+
+
+        <!-- Categories -->
+        <section class="categories-section" id="categories">
+
+            <div class="section-heading">
+                <div>
+                    <p class="small-title">EXPLORE</p>
+                    <h2>Find Projects by Category</h2>
+                </div>
+
+                <a href="{{ url_for('explore') }}">View all →</a>
+            </div>
+
+
+            <div class="category-grid">
+
+                <div class="category-card">
+                    <div class="category-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 3v2M9 3h6"/>
+                            <rect x="4" y="7" width="16" height="13" rx="3"/>
+                            <path d="M8 12h.01M16 12h.01M9 16h6M2 11v5M22 11v5"/>
+                        </svg>
+                    </div>
+                    <h3>AI & Machine Learning</h3>
+                    <p>Explore intelligent projects</p>
+                </div>
+
+                <div class="category-card">
+                   <div class="category-icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
+                 </svg>
+                   </div>
+                    <h3>Web Development</h3>
+                     <p>Websites and web applications</p>
+                 </div>
+
+               <div class="category-card">
+                    <div class="category-icon">
+                     <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14"/>
+                     </svg>
+                    </div>
+                         <h3>Python Projects</h3>
+                          <p>Python-based applications</p>
+                    </div>
+
+                <div class="category-card">
+                  <div class="category-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 9h13v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V9ZM17 11h1a2 2 0 0 1 0 4h-2"/>
+                      <path d="M8 6c-1-1 1-2 0-3M12 6c-1-1 1-2 0-3"/>
+                    </svg>
+                 </div>
+                    <h3>Java Projects</h3>
+                     <p>Java applications and systems</p>
+                 </div>
+
+            </div>
+        </section>
+
+
+        <!-- Featured Projects -->
+        <section class="projects-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="small-title">DISCOVER</p>
+                    <h2>Featured Projects</h2>
+                </div>
+
+                <a href="{{ url_for('explore') }}">Explore all →</a>
+
+            </div>
+
+
+            <div class="project-grid">
+
+                <article class="project-card">
+
+                    <div class="project-image">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 3v2M9 3h6"/>
+                            <rect x="4" y="7" width="16" height="13" rx="3"/>
+                            <path d="M8 12h.01M16 12h.01M9 16h6M2 11v5M22 11v5"/>
+                        </svg>
+                    </div>
+
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            AI & ML
+                        </span>
+
+                        <h3>AI Study Assistant</h3>
+
+                        <p>
+                            A student-focused assistant that helps
+                            organize and understand study materials.
+                        </p>
+
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>Flask</span>
+                            <span>AI</span>
+                        </div>
+
+                        <div class="project-footer">
+                            <span>♡ 32</span>
+                            <button>View Project →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="project-card">
+
+                    <div class="project-image">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="12" cy="12" r="9"/>
+                            <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>
+                        </svg>
+                    </div>
+
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            Web Development
+                        </span>
+
+                        <h3>Student Event Portal</h3>
+
+                        <p>
+                            A web platform for discovering and managing
+                            college events.
+                        </p>
+
+                        <div class="project-tech">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                        </div>
+
+                        <div class="project-footer">
+                            <span>♡ 21</span>
+                            <button>View Project →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="project-card">
+
+                    <div class="project-image">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 19V5M4 19h17"/>
+                            <rect x="7" y="12" width="3" height="5" rx="1"/>
+                            <rect x="12" y="8" width="3" height="9" rx="1"/>
+                            <rect x="17" y="4" width="3" height="13" rx="1"/>
+                        </svg>
+                    </div>
+
+                    <div class="project-content">
+
+                        <span class="project-category">
+                            Data Science
+                        </span>
+
+                        <h3>Student Performance Analyzer</h3>
+
+                        <p>
+                            A project that analyzes student performance
+                            and presents useful insights.
+                        </p>
+
+                        <div class="project-tech">
+                            <span>Python</span>
+                            <span>MySQL</span>
+                            <span>Data</span>
+                        </div>
+
+                        <div class="project-footer">
+                            <span>♡ 18</span>
+                            <button>View Project →</button>
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- AI Section -->
+        <section class="ai-section">
+
+            <div class="ai-content">
+
+                <p class="small-title">SMART DISCOVERY</p>
+
+                <h2>
+                    Not sure what project
+                    to explore?
+                </h2>
+
+                <p>
+                    NexHup can recommend projects based on your
+                    interests, technologies and project preferences.
+                </p>
+
+                <button class="primary-btn">
+                    Get AI Recommendations →
+                </button>
+
+            </div>
+
+
+            <div class="ai-card">
+
+                <div class="ai-icon">✦</div>
+
+                <h3>NexHup AI</h3>
+
+                <p>
+                    Find projects that match your interests.
+                </p>
+
+                <div class="recommendation">
+                    <span>Python + AI</span>
+                    <strong>92% match</strong>
+                </div>
+
+                <div class="recommendation">
+                    <span>Web Development</span>
+                    <strong>86% match</strong>
+                </div>
+
+            </div>
+
+        </section>
+        {% endif %}
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-logo">
+            Nex<span>Hup</span>
+        </div>
+
+        <p>
+            Discover. Build. Share.
+        </p>
+
+        <p class="copyright">
+            © 2026 NexHup. Student Project Repository.
+        </p>
+
+    </footer>
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    
+<!-- NexHup Chatbot -->
+<div id="chatbot">
+    <button id="chatToggle" type="button">💬 Chat with NexHup AI</button>
+
+    <div id="chatWindow" style="display: none;">
+        <div class="chat-header">
+            <strong>NexHup AI Assistant</strong>
+            <button id="chatClose" type="button">X</button>
+        </div>
+
+        <div id="chatMessages">
+            <p class="bot-message">
+                Hi! Ask me anything about student projects.
+            </p>
+        </div>
+
+        <form id="chatForm">
+            <input
+                type="text"
+                id="chatInput"
+                placeholder="Type your question..."
+                required
+            >
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+<script>
+const chatToggle = document.getElementById("chatToggle");
+const chatWindow = document.getElementById("chatWindow");
+const chatClose = document.getElementById("chatClose");
+const chatForm = document.getElementById("chatForm");
+const chatInput = document.getElementById("chatInput");
+const chatMessages = document.getElementById("chatMessages");
+
+chatToggle.onclick = () => chatWindow.style.display = "block";
+chatClose.onclick = () => chatWindow.style.display = "none";
+
+chatForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    const userMessage = document.createElement("p");
+    userMessage.textContent = "You: " + message;
+    chatMessages.appendChild(userMessage);
+
+    chatInput.value = "";
+    chatInput.disabled = true;
+
+    const waiting = document.createElement("p");
+    waiting.textContent = "NexHup AI is thinking...";
+    chatMessages.appendChild(waiting);
+
+    try {
+        const response = await fetch("/chatbot", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({message})
+        });
+
+        const data = await response.json();
+        waiting.textContent = response.ok
+            ? "AI: " + data.reply
+            : data.error || "Something went wrong.";
+
+    } catch (error) {
+        waiting.textContent = "Unable to connect to the chatbot.";
+    } finally {
+        chatInput.disabled = false;
+        chatInput.focus();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+});
+</script>
+</body>
+</html>

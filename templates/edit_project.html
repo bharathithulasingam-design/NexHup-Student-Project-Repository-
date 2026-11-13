@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Project | NexHup</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/premium-pages.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7ff;
+            color: #252642;
+            padding: 25px;
+        }
+        .form-box {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+        }
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #d9dcef;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+        textarea { min-height: 120px; }
+        button, .back {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 18px;
+            border: 0;
+            border-radius: 8px;
+            background: #6554e8;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .current-file {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="dark-page edit-page">
+<div class="form-box">
+    <h1>Edit Your Project</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <label for="title">Project Title *</label>
+        <input id="title" name="title" maxlength="150"
+               value="{{ project.title }}" required>
+
+        <label for="description">Description *</label>
+        <textarea id="description" name="description"
+                  required>{{ project.description }}</textarea>
+
+        <label for="category">Category *</label>
+        <select id="category" name="category" required>
+            {% for item in [
+                'Web Development', 'Python', 'AI/ML',
+                'Mobile App', 'Other'
+            ] %}
+            <option value="{{ item }}"
+                {% if project.category == item %}selected{% endif %}>
+                {{ item }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label for="technologies">Technologies *</label>
+        <input id="technologies" name="technologies"
+               value="{{ project.technologies or '' }}" required>
+
+        <label for="visibility">Project Visibility *</label>
+        <select id="visibility" name="visibility" required>
+            <option value="public"
+                {% if project.visibility == 'public' %}selected{% endif %}>
+                Public - visible to everyone
+            </option>
+            <option value="private"
+                {% if project.visibility == 'private' %}selected{% endif %}>
+                Private - visible only to you
+            </option>
+        </select>
+
+        <label for="image">Project Image (Optional)</label>
+        {% if project.image_filename %}
+        <div class="current-file">
+            Current image:
+            <a href="{{ url_for('project_file', project_id=project.id, file_type='image') }}"
+               target="_blank">View image</a>
+        </div>
+        {% endif %}
+        <input id="image" name="image" type="file"
+               accept=".png,.jpg,.jpeg,.webp">
+
+        <label for="document">PDF Document (Optional)</label>
+        {% if project.document_filename %}
+        <div class="current-file">
+            Current PDF:
+            <a href="{{ url_for('project_file', project_id=project.id, file_type='document') }}"
+               target="_blank">View PDF</a>
+        </div>
+        {% endif %}
+        <input id="document" name="document" type="file"
+               accept=".pdf">
+
+        <label for="source_file">Project Source Files (ZIP, optional)</label>
+        {% if project.source_filename %}
+        <div class="current-file">
+            Current source archive:
+            <a href="{{ url_for('download_project_source',
+                                project_id=project.id) }}">Download ZIP</a>
+        </div>
+        {% endif %}
+        <input id="source_file" name="source_file" type="file"
+               accept=".zip,application/zip,application/x-zip-compressed">
+
+        <label for="github_link">GitHub Link (Optional)</label>
+        <input id="github_link" name="github_link" type="url"
+               value="{{ project.github_link or '' }}">
+
+        <label for="demo_link">Demo Link (Optional)</label>
+        <input id="demo_link" name="demo_link" type="url"
+               value="{{ project.demo_link or '' }}">
+
+        <button type="submit">Save Changes</button>
+        <a class="back" href="{{ url_for('explore') }}">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

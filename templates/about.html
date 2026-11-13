@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About NexHup</title>
+    <meta name="description"
+          content="Learn about NexHup, a community where students share projects, discover new ideas, and learn by building.">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="{{ url_for('about', _external=True) }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="About NexHup">
+    <meta property="og:description"
+          content="NexHup brings student projects together so learners can share what they build and find inspiration.">
+    <meta property="og:url" content="{{ url_for('about', _external=True) }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/premium-pages.css') }}">
+</head>
+<body class="dark-page about-page">
+    <header class="site-nav">
+        <a class="logo" href="{{ url_for('home') }}">Nex<span>Hup</span></a>
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('explore') }}">Explore</a>
+            <a href="{{ url_for('home') }}#categories">Categories</a>
+            <a href="{{ url_for('about') }}" aria-current="page">About</a>
+            {% if session.get('user_id') %}
+                <a class="nav-cta" href="{{ url_for('upload_project') }}">Upload Project</a>
+                <form action="{{ url_for('logout') }}" method="POST" class="nav-logout">
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a class="nav-cta" href="{{ url_for('register') }}">Join NexHup</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-hero">
+            <p class="eyebrow">ABOUT NEXHUP</p>
+            <h1>A place for student ideas to <span>take shape.</span></h1>
+            <p>
+                NexHup brings student projects together so learners can share what
+                they build, discover new ideas, and find inspiration for what comes next.
+            </p>
+            <div class="about-actions">
+                <a class="button-primary" href="{{ url_for('explore') }}">Explore projects</a>
+                <a class="button-secondary" href="{{ url_for('register') }}">Join the community</a>
+            </div>
+        </section>
+
+        <section class="about-content">
+            <div class="about-intro">
+                <p class="eyebrow">OUR PURPOSE</p>
+                <h2>Built around learning by making</h2>
+                <p>
+                    Great projects start with curiosity. NexHup gives students a
+                    straightforward place to present their work, explain the tools
+                    they used, and learn from projects shared by others.
+                </p>
+            </div>
+
+            <div class="about-features">
+                <article class="about-feature">
+                    <span class="feature-number">01</span>
+                    <h3>Discover</h3>
+                    <p>Browse projects across technology categories and find ideas that interest you.</p>
+                </article>
+                <article class="about-feature">
+                    <span class="feature-number">02</span>
+                    <h3>Build</h3>
+                    <p>Explore practical student work and learn from the approaches and tools behind it.</p>
+                </article>
+                <article class="about-feature">
+                    <span class="feature-number">03</span>
+                    <h3>Share</h3>
+                    <p>Publish your own project and make your learning visible to the community.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="about-cta">
+            <div>
+                <p class="eyebrow">YOUR NEXT IDEA STARTS HERE</p>
+                <h2>Ready to explore what students are building?</h2>
+            </div>
+            <a class="button-primary" href="{{ url_for('explore') }}">Browse projects <span aria-hidden="true">→</span></a>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <a class="logo" href="{{ url_for('home') }}">Nex<span>Hup</span></a>
+        <p>Discover. Build. Share.</p>
+        <p class="copyright">© 2026 NexHup. Student Project Repository.</p>
+    </footer>
+</body>
+</html>

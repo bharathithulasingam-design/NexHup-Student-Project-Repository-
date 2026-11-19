@@ -380,9 +380,10 @@ nav {
             <input type="file" id="document" name="document"
                    accept=".pdf,application/pdf">
 
-            <label for="source_file">Project Source Files <span class="optional">(Optional ZIP archive, up to 25 MB total upload)</span></label>
+            <label for="source_file">Project Source Files <span class="optional">(Required ZIP archive, up to 25 MB total upload)</span></label>
             <input type="file" id="source_file" name="source_file"
-                   accept=".zip,application/zip,application/x-zip-compressed">
+                   accept=".zip,application/zip,application/x-zip-compressed"
+                   required>
 
             <label for="github_link">GitHub Link <span class="optional">(Optional)</span></label>
             <input type="url" id="github_link" name="github_link"

@@ -121,7 +121,7 @@
         <input id="document" name="document" type="file"
                accept=".pdf">
 
-        <label for="source_file">Project Source Files (ZIP, optional)</label>
+        <label for="source_file">Project Source Files (ZIP, {% if project.source_filename %}replacement optional{% else %}required{% endif %})</label>
         {% if project.source_filename %}
         <div class="current-file">
             Current source archive:
@@ -130,7 +130,8 @@
         </div>
         {% endif %}
         <input id="source_file" name="source_file" type="file"
-               accept=".zip,application/zip,application/x-zip-compressed">
+               accept=".zip,application/zip,application/x-zip-compressed"
+               {% if not project.source_filename %}required{% endif %}>
 
         <label for="github_link">GitHub Link (Optional)</label>
         <input id="github_link" name="github_link" type="url"
